@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rob Kenefeck — Speaker, Cloud Native Practitioner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green-dark:  #1a2e1c;
+      --green-mid:   #2d5a30;
+      --green-leaf:  #3e7d43;
+      --green-light: #6ab870;
+      --green-pale:  #d6ead7;
+      --green-wash:  #f0f7f0;
+      --cream:       #faf9f6;
+      --ink:         #1a1f1a;
+      --ink-soft:    #3d453d;
+      --rule:        #ccdccc;
+      --serif: 'DM Serif Display', Georgia, serif;
+      --sans:  'DM Sans', system-ui, sans-serif;
+      --nav-h: 68px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--sans); background: var(--cream); color: var(--ink); -webkit-font-smoothing: antialiased; }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: var(--nav-h);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 clamp(1.5rem, 5vw, 4rem);
+      background: rgba(250,249,246,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--rule);
+    }
+    .nav-logo { font-family: var(--serif); font-size: 1.25rem; color: var(--green-dark); text-decoration: none; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { font-size: 0.875rem; font-weight: 500; color: var(--ink-soft); text-decoration: none; letter-spacing: 0.04em; text-transform: uppercase; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--green-leaf); }
+
+    .hero { min-height: 100vh; padding-top: var(--nav-h); display: grid; grid-template-columns: 1fr 1fr; align-items: center; overflow: hidden; }
+    .hero-text { padding: clamp(3rem, 8vw, 7rem) clamp(1.5rem, 5vw, 4rem); animation: fadeUp 0.8s ease both; }
+    .hero-eyebrow { display: inline-block; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--green-leaf); margin-bottom: 1.25rem; }
+    .hero-eyebrow::before { content: ''; display: inline-block; width: 28px; height: 1px; background: var(--green-leaf); vertical-align: middle; margin-right: 0.6rem; }
+    .hero h1 { font-family: var(--serif); font-size: clamp(3rem, 6vw, 5.5rem); line-height: 1.0; color: var(--green-dark); letter-spacing: -0.02em; margin-bottom: 1.5rem; }
+    .hero h1 em { font-style: italic; color: var(--green-leaf); }
+    .hero-sub { font-size: clamp(0.95rem, 1.4vw, 1.1rem); line-height: 1.75; color: var(--ink-soft); max-width: 42ch; margin-bottom: 2.5rem; font-weight: 300; }
+    .hero-badges { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2.5rem; }
+    .badge { font-size: 0.78rem; font-weight: 500; color: var(--green-dark); background: var(--green-pale); border: 1px solid var(--green-light); border-radius: 100px; padding: 0.35rem 0.85rem; }
+    .cta-row { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn { display: inline-flex; align-items: center; gap: 0.45rem; padding: 0.75rem 1.75rem; border-radius: 4px; font-family: var(--sans); font-size: 0.875rem; font-weight: 500; letter-spacing: 0.03em; text-decoration: none; transition: all 0.2s; }
+    .btn-primary { background: var(--green-dark); color: var(--cream); border: 1.5px solid var(--green-dark); }
+    .btn-primary:hover { background: var(--green-mid); border-color: var(--green-mid); }
+    .btn-outline { background: transparent; color: var(--green-dark); border: 1.5px solid var(--green-dark); }
+    .btn-outline:hover { background: var(--green-wash); }
+    .btn-ghost { background: transparent; color: var(--green-pale); border: 1.5px solid rgba(214,234,215,0.4); }
+    .btn-ghost:hover { border-color: var(--green-light); color: var(--green-light); }
+
+    .hero-visual { height: 100vh; position: relative; background: var(--green-dark); overflow: hidden; animation: fadeIn 1s ease 0.3s both; }
+    .hero-visual-inner { position: absolute; inset: 0; background: radial-gradient(ellipse 80% 60% at 60% 40%, #3e7d43 0%, transparent 65%), radial-gradient(ellipse 50% 70% at 20% 80%, #2d5a30 0%, transparent 60%), var(--green-dark); }
+    .hero-visual-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(214,234,215,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(214,234,215,0.05) 1px, transparent 1px); background-size: 48px 48px; }
+    .hero-visual-text { position: absolute; bottom: 3rem; left: 3rem; right: 3rem; }
+    .hero-visual-text blockquote { font-family: var(--serif); font-style: italic; font-size: clamp(1.3rem, 2.5vw, 2rem); color: rgba(214,234,215,0.9); line-height: 1.4; }
+    .hero-visual-text cite { display: block; font-family: var(--sans); font-style: normal; font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--green-light); margin-top: 1rem; }
+
+    section { padding: clamp(4rem, 8vw, 7rem) clamp(1.5rem, 5vw, 4rem); }
+    .section-label { display: flex; align-items: center; gap: 0.75rem; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--green-leaf); margin-bottom: 1rem; }
+    .section-label::after { content: ''; flex: 1; max-width: 80px; height: 1px; background: var(--green-light); }
+    .section-heading { font-family: var(--serif); font-size: clamp(2rem, 4vw, 3.5rem); color: var(--green-dark); line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 1rem; }
+
+    #about { background: var(--green-wash); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+    .about-grid { display: grid; grid-template-columns: 1fr 1.6fr; gap: 5rem; align-items: start; }
+    .about-left .section-heading { margin-bottom: 2rem; }
+    .about-facts { margin-top: 2rem; display: flex; flex-direction: column; gap: 1rem; }
+    .about-fact { padding: 1rem 1.25rem; background: white; border-left: 3px solid var(--green-leaf); border-radius: 0 4px 4px 0; }
+    .about-fact-label { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--green-leaf); margin-bottom: 0.25rem; }
+    .about-fact-value { font-size: 0.95rem; font-weight: 500; color: var(--ink); }
+    .about-body p { font-size: 1.05rem; line-height: 1.85; color: var(--ink-soft); margin-bottom: 1.5rem; font-weight: 300; }
+    .about-body p:last-child { margin-bottom: 0; }
+
+    #talks { background: var(--cream); }
+    .talks-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 3rem; flex-wrap: wrap; gap: 1rem; }
+    .talks-grid { display: flex; flex-direction: column; gap: 1px; background: var(--rule); border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; }
+    .talk-row { background: var(--cream); padding: 1.75rem 2rem; display: grid; grid-template-columns: auto 1fr auto; gap: 1.5rem 2rem; align-items: center; transition: background 0.2s; }
+    .talk-row:hover { background: var(--green-wash); }
+    .talk-year { font-family: var(--serif); font-size: 1.1rem; color: var(--green-light); min-width: 3.5rem; }
+    .talk-title { font-family: var(--serif); font-size: 1.2rem; color: var(--green-dark); margin-bottom: 0.3rem; line-height: 1.3; }
+    .talk-meta { font-size: 0.83rem; color: var(--ink-soft); }
+    .talk-meta .event { font-weight: 500; }
+    .talk-links { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .talk-link { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.78rem; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; padding: 0.4rem 0.85rem; border-radius: 3px; text-decoration: none; transition: all 0.15s; white-space: nowrap; }
+    .talk-link-recording { background: var(--green-dark); color: var(--cream); }
+    .talk-link-recording:hover { background: var(--green-mid); }
+    .talk-link-slides { background: transparent; color: var(--green-dark); border: 1.5px solid var(--green-dark); }
+    .talk-link-slides:hover { background: var(--green-pale); }
+    .talk-link-placeholder { background: transparent; color: var(--rule); border: 1.5px solid var(--rule); cursor: default; pointer-events: none; }
+
+    #blog { background: var(--green-dark); }
+    #blog .section-label { color: var(--green-light); }
+    #blog .section-label::after { background: var(--green-leaf); }
+    #blog .section-heading { color: var(--green-pale); }
+    .blog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 3rem; }
+    .blog-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(214,234,215,0.15); border-radius: 6px; padding: 1.75rem; transition: all 0.2s; text-decoration: none; display: block; }
+    .blog-card:hover { background: rgba(255,255,255,0.08); border-color: rgba(214,234,215,0.3); transform: translateY(-2px); }
+    .blog-card-tag { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--green-light); margin-bottom: 0.75rem; }
+    .blog-card-title { font-family: var(--serif); font-size: 1.15rem; color: var(--green-pale); line-height: 1.4; margin-bottom: 0.75rem; }
+    .blog-card-excerpt { font-size: 0.88rem; line-height: 1.7; color: rgba(214,234,215,0.6); font-weight: 300; }
+    .blog-card-footer { margin-top: 1.25rem; font-size: 0.78rem; color: var(--green-light); font-weight: 500; }
+    .blog-cta { margin-top: 2.5rem; text-align: center; }
+
+    footer { background: var(--ink); color: rgba(250,249,246,0.5); padding: 2.5rem clamp(1.5rem, 5vw, 4rem); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+    footer a { color: rgba(250,249,246,0.5); text-decoration: none; transition: color 0.2s; }
+    footer a:hover { color: var(--green-light); }
+    .footer-name { font-family: var(--serif); font-size: 1rem; color: var(--cream); }
+    .footer-links { display: flex; gap: 1.5rem; font-size: 0.8rem; }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; min-height: auto; }
+      .hero-visual { height: 40vh; }
+      .hero-visual-text blockquote { font-size: 1.1rem; }
+      .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .talk-row { grid-template-columns: 1fr; gap: 0.75rem; }
+      .talk-year { font-size: 0.85rem; }
+    }
+    @media (max-width: 600px) {
+      .nav-links { display: none; }
+      .talks-header { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-logo" href="#">Rob Kenefeck</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#talks">Talks</a></li>
+      <li><a href="#blog">Writing</a></li>
+    </ul>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-text">
+      <span class="hero-eyebrow">Principal Consultant &middot; Speaker &middot; Cloud Native Practitioner</span>
+      <h1>Rob<br><em>Kenefeck</em></h1>
+      <p class="hero-sub">
+        CNCF Ambassador &amp; Kubestronaut. Principal Consultant at ControlPlane.
+        15+ years designing and deploying cloud native platforms &mdash; helping teams
+        understand when Kubernetes is the answer, and when it isn&rsquo;t.
+      </p>
+      <div class="hero-badges">
+        <span class="badge">CNCF Ambassador</span>
+        <span class="badge">Kubestronaut</span>
+        <span class="badge">CKA &middot; CKAD &middot; CKS &middot; KCNA &middot; KCSA</span>
+        <span class="badge">GCP Certified</span>
+        <span class="badge">Toastmasters Area Director</span>
+        <span class="badge">Cloud Native Melbourne &amp; Sydney Organiser</span>
+        <span class="badge">CloudCon SYD Organiser</span>
+        <span class="badge">KCD Melbourne 2026 Organiser</span>
+      </div>
+      <div class="cta-row">
+        <a href="#talks" class="btn btn-primary">&#x25BC; Watch My Talks</a>
+        <a href="#about" class="btn btn-outline">About Me</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-visual-inner"></div>
+      <div class="hero-visual-grid"></div>
+      <div class="hero-visual-text">
+        <blockquote>&ldquo;Security isn&rsquo;t a layer you add to DevOps &mdash; it&rsquo;s the foundation you build on.&rdquo;</blockquote>
+        <cite>&mdash; Rob Kenefeck</cite>
+      </div>
+    </div>
+  </div>
+
+  <section id="about">
+    <div class="about-grid">
+      <div class="about-left">
+        <div class="section-label">About</div>
+        <h2 class="section-heading">15+ years of<br><em style="font-style:italic; color:var(--green-leaf)">cloud native</em><br>in the wild</h2>
+        <div class="about-facts">
+          <div class="about-fact">
+            <div class="about-fact-label">Current Role</div>
+            <div class="about-fact-value">Principal Consultant, ControlPlane</div>
+          </div>
+          <div class="about-fact">
+            <div class="about-fact-label">Certifications</div>
+            <div class="about-fact-value">Kubestronaut (CKA, CKAD, CKS, KCNA, KCSA) &middot; GCP Cloud Architect &amp; DevOps Engineer</div>
+          </div>
+          <div class="about-fact">
+            <div class="about-fact-label">Community</div>
+            <div class="about-fact-value">CNCF Ambassador (Oct 2025&ndash;present)</div>
+          </div>
+          <div class="about-fact">
+            <div class="about-fact-label">Events Organiser</div>
+            <div class="about-fact-value">Cloud Native Melbourne &middot; Cloud Native Sydney &middot; CloudCon SYD &middot; KCD Melbourne 2026</div>
+          </div>
+          <div class="about-fact">
+            <div class="about-fact-label">Toastmasters</div>
+            <div class="about-fact-value">Area Director, District 73 &middot; President, GOTO Toastmasters &middot; Club Mentor</div>
+          </div>
+          <div class="about-fact">
+            <div class="about-fact-label">Education</div>
+            <div class="about-fact-value">BSc (Hons) Computer Science &middot; University of Portsmouth</div>
+          </div>
+        </div>
+      </div>
+      <div class="about-body">
+        <p>
+          Rob is a Principal Consultant with 15+ years of experience designing, building, and deploying
+          cloud native platforms. His work is defined by a relentless commitment to helping clients embrace
+          cloud native principles &mdash; enhancing their agility, scalability, and resilience. He brings deep
+          expertise in cloud architecture, DevOps, containerisation, Kubernetes, and service mesh technologies,
+          crafting bespoke cloud strategies that align tightly with business objectives.
+        </p>
+        <p>
+          His current passion projects sit at the intersection of Service Mesh design and Security. Rob
+          advocates for <em>expanding</em> security left rather than merely shifting it &mdash; making security
+          a permanent, inseparable part of DevOps rather than a bolt-on. He regularly educates peers on
+          cloud native advancements and fundamentals, which he considers a great excuse to keep learning.
+        </p>
+        <p>
+          Beyond consulting, Rob is an active community builder. As a CNCF Ambassador he organises
+          events, mentors practitioners, and speaks at industry conferences globally. He is President
+          of GOTO Toastmasters, Area Director for Toastmasters District 73, and an organiser of both
+          Cloud Native Melbourne and Cloud Native Sydney &mdash; the two communities that together run
+          the CloudCon SYD conference. He is also co-organising KCD Melbourne, officially announced
+          by CNCF for early August 2026. Away from tech, he&rsquo;s a committed McLaren F1 fan.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="talks">
+    <div class="talks-header">
+      <div>
+        <div class="section-label">Public Talks</div>
+        <h2 class="section-heading">On Stage</h2>
+      </div>
+    </div>
+
+    <div class="talks-grid">
+
+      <div class="talk-row">
+        <div class="talk-year">2026</div>
+        <div class="talk-content">
+          <div class="talk-title">Fixing a Misconfigured Kubernetes Cluster</div>
+          <div class="talk-meta"><span class="event">Everything Open</span> &middot; Canberra, AU</div>
+        </div>
+        <div class="talk-links">
+          <a href="https://2026.everythingopen.au/schedule/presentation/7/" target="_blank" rel="noopener" class="talk-link talk-link-slides">&#x2197; Details</a>
+        </div>
+      </div>
+
+      <div class="talk-row">
+        <div class="talk-year">2026</div>
+        <div class="talk-content">
+          <div class="talk-title">D73 Education &amp; Training &mdash; Level Up Your Speeches With AI</div>
+          <div class="talk-meta"><span class="event">Toastmasters District 73</span> &middot; Online &middot; January 2026</div>
+        </div>
+        <div class="talk-links">
+          <a href="https://youtu.be/UJZLl8-M7fU" target="_blank" rel="noopener" class="talk-link talk-link-recording">&#x25B6; Recording</a>
+        </div>
+      </div>
+
+      <div class="talk-row">
+        <div class="talk-year">2025</div>
+        <div class="talk-content">
+          <div class="talk-title">An Introduction to Capture the Flag</div>
+          <div class="talk-meta"><span class="event">Everything Open</span> &middot; Adelaide, AU</div>
+        </div>
+        <div class="talk-links">
+          <a href="https://www.youtube.com/watch?v=1vTMkAmfOJI&list=PLhxFC4oaQ9nOeeAwEaduDoBWgbPUgl-vQ" target="_blank" rel="noopener" class="talk-link talk-link-recording">&#x25B6; Recording</a>
+        </div>
+      </div>
+
+      <div class="talk-row">
+        <div class="talk-year">2025</div>
+        <div class="talk-content">
+          <div class="talk-title">Navigating the AI Frontier: Secure Adoption of LLMs in FinTech</div>
+          <div class="talk-meta"><span class="event">Everything Open</span> &middot; Adelaide, AU</div>
+        </div>
+        <div class="talk-links">
+          <a href="https://youtu.be/050OcQ5Ys8I" target="_blank" rel="noopener" class="talk-link talk-link-recording">&#x25B6; Recording</a>
+        </div>
+      </div>
+
+      <div class="talk-row">
+        <div class="talk-year">2025</div>
+        <div class="talk-content">
+          <div class="talk-title">Navigating the AI Frontier: Secure Adoption of LLMs in FinTech</div>
+          <div class="talk-meta"><span class="event">Cloud Native Summit</span> &middot; Auckland, NZ</div>
+        </div>
+        <div class="talk-links">
+          <span class="talk-link talk-link-placeholder">No recording</span>
+        </div>
+      </div>
+
+      <div class="talk-row">
+        <div class="talk-year">2025</div>
+        <div class="talk-content">
+          <div class="talk-title">E8s on K8s: Applying Essential 8 Recommendations to a Kubernetes Environment</div>
+          <div class="talk-meta"><span class="event">CyberCon (AISA)</span> &middot; Melbourne, AU</div>
+        </div>
+        <div class="talk-links">
+          <a href="https://melbourne2025.cyberconference.com.au/sessions/session-wv6neqhkx7" target="_blank" rel="noopener" class="talk-link talk-link-slides">&#x2197; Details</a>
+        </div>
+      </div>
+
+      <div class="talk-row">
+        <div class="talk-year">2025</div>
+        <div class="talk-content">
+          <div class="talk-title">Securing Your Kubernetes Environment: Identifying and Addressing Common Misconfigurations</div>
+          <div class="talk-meta"><span class="event">CyberCon (AISA)</span> &middot; Canberra, AU</div>
+        </div>
+        <div class="talk-links">
+          <a href="https://canberra2025.cyberconference.com.au/sessions/session-egokuqy1uj" target="_blank" rel="noopener" class="talk-link talk-link-slides">&#x2197; Details</a>
+        </div>
+      </div>
+
+      <div class="talk-row">
+        <div class="talk-year">2025</div>
+        <div class="talk-content">
+          <div class="talk-title">Capture the Flag</div>
+          <div class="talk-meta"><span class="event">BSides Canberra</span> &middot; Canberra, AU</div>
+        </div>
+        <div class="talk-links">
+          <span class="talk-link talk-link-placeholder">No recording</span>
+        </div>
+      </div>
+
+      <div class="talk-row">
+        <div class="talk-year">2025</div>
+        <div class="talk-content">
+          <div class="talk-title">From Prompt to Production: Automating GitOps with AI-Powered Agents</div>
+          <div class="talk-meta"><span class="event">AgentCon</span> &middot; Perth, AU</div>
+        </div>
+        <div class="talk-links">
+          <a href="https://globalai.community/chapters/perth/events/agentcon-2025-perth/" target="_blank" rel="noopener" class="talk-link talk-link-slides">&#x2197; Details</a>
+        </div>
+      </div>
+
+      <div class="talk-row">
+        <div class="talk-year">2025</div>
+        <div class="talk-content">
+          <div class="talk-title">The Tech&rsquo;o&rsquo;Space Podcast Ep&nbsp;55 &mdash; From Grit to DevOps: Service Mesh, Strategy &amp; Toastmasters Impact</div>
+          <div class="talk-meta"><span class="event">Tech&rsquo;o&rsquo;Space Podcast</span> &middot; Online</div>
+        </div>
+        <div class="talk-links">
+          <a href="https://youtu.be/ywLOt8xW9Oc" target="_blank" rel="noopener" class="talk-link talk-link-recording">&#x25B6; Listen</a>
+        </div>
+      </div>
+
+      <div class="talk-row">
+        <div class="talk-year">2024</div>
+        <div class="talk-content">
+          <div class="talk-title">FluxCD: What, Why, How</div>
+          <div class="talk-meta"><span class="event">K8SUG Melbourne</span> &middot; Melbourne, AU</div>
+        </div>
+        <div class="talk-links">
+          <a href="https://youtu.be/sIqjHbf9h8U?t=3565" target="_blank" rel="noopener" class="talk-link talk-link-recording">&#x25B6; Recording</a>
+        </div>
+      </div>
+
+      <div class="talk-row">
+        <div class="talk-year">2024</div>
+        <div class="talk-content">
+          <div class="talk-title">FluxCD: What, Why, How</div>
+          <div class="talk-meta"><span class="event">Auckland K8s Meetup</span> &middot; Auckland, NZ</div>
+        </div>
+        <div class="talk-links">
+          <span class="talk-link talk-link-placeholder">No recording</span>
+        </div>
+      </div>
+
+      <div class="talk-row">
+        <div class="talk-year">2024</div>
+        <div class="talk-content">
+          <div class="talk-title">Capture the Flag</div>
+          <div class="talk-meta"><span class="event">BSides Canberra</span> &middot; Canberra, AU</div>
+        </div>
+        <div class="talk-links">
+          <span class="talk-link talk-link-placeholder">No recording</span>
+        </div>
+      </div>
+
+      <div class="talk-row">
+        <div class="talk-year">2023</div>
+        <div class="talk-content">
+          <div class="talk-title">Golden Images</div>
+          <div class="talk-meta"><span class="event">Infracoders</span> &middot; Melbourne, AU</div>
+        </div>
+        <div class="talk-links">
+          <span class="talk-link talk-link-placeholder">No recording</span>
+        </div>
+      </div>
+
+      <div class="talk-row">
+        <div class="talk-year">2017</div>
+        <div class="talk-content">
+          <div class="talk-title">Dockerising GUI Apps</div>
+          <div class="talk-meta"><span class="event">Container Camp</span> &middot; Sydney, AU &middot; Day 2 Lightning Talk</div>
+        </div>
+        <div class="talk-links">
+          <a href="https://youtu.be/0Hx4G1RUxJ0" target="_blank" rel="noopener" class="talk-link talk-link-recording">&#x25B6; Recording</a>
+        </div>
+      </div>
+
+    </div>
+
+    <p style="margin-top:1.5rem; font-size:0.82rem; color:var(--ink-soft);">
+      Talks without a link were not recorded or recordings are not publicly available.
+      Interested in having Rob speak at your event?
+      <a href="mailto:rob.kenefeck@gmail.com" style="color:var(--green-leaf);">Get in touch.</a>
+    </p>
+  </section>
+
+  <section id="blog">
+    <div class="section-label">Writing</div>
+    <h2 class="section-heading" style="color:var(--green-pale)">Thoughts &amp;<br><em style="font-style:italic; color:var(--green-light)">Opinions</em></h2>
+
+    <div class="blog-grid">
+
+      <a href="https://medium.com/weareservian/a-prediction-for-2020-based-on-the-k8s-forum-sydney-aa00a110fb13" target="_blank" rel="noopener" class="blog-card">
+        <div class="blog-card-tag">Kubernetes &middot; Medium &middot; Dec 2019</div>
+        <div class="blog-card-title">A Prediction for 2020 Based on the K8s Forum Sydney</div>
+        <div class="blog-card-excerpt">Takeaways from Kubernetes Forum Sydney — multi-cloud, product thinking, service mesh, and what the 80/20 beginner/advanced split in the room says about where the ecosystem is heading.</div>
+        <div class="blog-card-footer">Read on Medium &rarr;</div>
+      </a>
+
+      <a href="https://control-plane.io/posts/mastering-the-cloud-native-wave-security-resilience-in-modern-systems/" target="_blank" rel="noopener" class="blog-card">
+        <div class="blog-card-tag">Security &middot; ControlPlane &middot; Jun 2024</div>
+        <div class="blog-card-title">Mastering the Cloud Native Wave: Security Resilience in Modern Systems</div>
+        <div class="blog-card-excerpt">From Infosecurity Europe 2024 — how to close the gap between technical teams and decision-makers through threat modelling, Zero Trust, and secure-by-design cloud native adoption.</div>
+        <div class="blog-card-footer">Read on ControlPlane &rarr;</div>
+      </a>
+
+      <a href="https://control-plane.io/posts/what-is-gitops/" target="_blank" rel="noopener" class="blog-card">
+        <div class="blog-card-tag">GitOps &middot; ControlPlane &middot; Dec 2024</div>
+        <div class="blog-card-title">What is GitOps?</div>
+        <div class="blog-card-excerpt">The first in a series on Flux CD — tracing the evolution from manual configuration to GitOps, and unpacking the four core principles: declarative, versioned, pulled, and continuously reconciled.</div>
+        <div class="blog-card-footer">Read on ControlPlane &rarr;</div>
+      </a>
+
+      <a href="https://control-plane.io/posts/what-is-fluxcd/" target="_blank" rel="noopener" class="blog-card">
+        <div class="blog-card-tag">GitOps &middot; ControlPlane &middot; Jan 2025</div>
+        <div class="blog-card-title">What is Flux CD?</div>
+        <div class="blog-card-excerpt">Part two of the Flux CD series — how Flux uses Kubernetes-native controllers to keep clusters in sync with Git, covering sources, Kustomize reconciliation, image automation, and when to use Flux over plain kubectl.</div>
+        <div class="blog-card-footer">Read on ControlPlane &rarr;</div>
+      </a>
+
+      <a href="https://www.linkedin.com/in/robkenefeck/" target="_blank" rel="noopener" class="blog-card">
+        <div class="blog-card-tag">More writing</div>
+        <div class="blog-card-title">Posts, Talks &amp; Updates on LinkedIn</div>
+        <div class="blog-card-excerpt">Rob regularly shares insights on Kubernetes, cloud native security, SRE, and community events on LinkedIn. Follow along for the latest.</div>
+        <div class="blog-card-footer">Follow on LinkedIn &rarr;</div>
+      </a>
+
+    </div>
+
+    <div class="blog-cta">
+      <a href="https://medium.com/@rkenefeck" target="_blank" rel="noopener" class="btn btn-ghost">View Medium Profile &rarr;</a>
+    </div>
+  </section>
+
+  <footer>
+    <span class="footer-name">Rob Kenefeck</span>
+    <div class="footer-links">
+      <a href="https://www.linkedin.com/in/robkenefeck/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://www.youtube.com/@RobK8S" target="_blank" rel="noopener">YouTube</a>
+      <a href="https://github.com/rkenefeck" target="_blank" rel="noopener">GitHub</a>
+      <a href="mailto:rob.kenefeck@gmail.com">Email</a>
+    </div>
+    <span style="font-size:0.78rem;">&copy; 2026 Rob Kenefeck</span>
+  </footer>
+
+</body>
+</html>
