@@ -50,7 +50,7 @@ For a talk with no links yet, replace the `<a>` tag with:
 
 ## How to add a new Blog Post
 
-Open `index.html` and find the `<!-- BLOG -->` section. Copy an existing blog card and paste it before the LinkedIn card (which should always stay last):
+Open `index.html` and find the `<!-- BLOG -->` section. Blog cards are listed newest first, so copy an existing blog card and paste it at the **top** of the list, above the most recent post. The LinkedIn card must always stay last:
 
 ```html
 <a href="https://your-post-url.com" target="_blank" rel="noopener" class="blog-card">
